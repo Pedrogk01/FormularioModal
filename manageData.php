@@ -1,5 +1,4 @@
 <?php
-// Conexão com o banco de dados
 $server = 'localhost';
 $usuario = 'root';
 $senha = '';
@@ -11,7 +10,6 @@ if ($conn->connect_error) {
     die("Erro na conexão com o banco de dados: " . $conn->connect_error);
 }
 
-// Função para inserir dados
 function insertData($data) {
     global $conn;
     $stmt = $conn->prepare("INSERT INTO cadastro (nome, sobrenome, data, sexo, cpf, tipo, logradouro, bairro, cidade, numero, cep, email, telefone) 
@@ -32,7 +30,6 @@ function insertData($data) {
     $stmt->close();
 }
 
-// Função para atualizar dados
 function updateData($data) {
     global $conn;
     $stmt = $conn->prepare("UPDATE cadastro 
@@ -54,7 +51,6 @@ function updateData($data) {
     $stmt->close();
 }
 
-// Função para excluir dados
 function deleteData($id) {
     global $conn;
     $stmt = $conn->prepare("DELETE FROM cadastro WHERE id = ?");
@@ -69,7 +65,6 @@ function deleteData($id) {
     $stmt->close();
 }
 
-// Função para carregar dados da tabela
 function loadTableData() {
     global $conn;
     $result = $conn->query("SELECT * FROM cadastro");
@@ -80,7 +75,6 @@ function loadTableData() {
     return $data;
 }
 
-// Função para obter os dados do registro por ID
 function getRecordById($id) {
     global $conn;
     $stmt = $conn->prepare("SELECT * FROM cadastro WHERE id = ?");
@@ -93,7 +87,6 @@ function getRecordById($id) {
     return $record;
 }
 
-// Função para ordenar dados
 function sortData($column) {
     global $conn;
     $result = $conn->query("SELECT * FROM cadastro ORDER BY $column");
@@ -104,9 +97,8 @@ function sortData($column) {
     return $data;
 }
 
-// Verifica o tipo de requisição e a ação a ser realizada
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $action = $_POST['action'] ?? ''; // Recebe a ação
+    $action = $_POST['action'] ?? '';
 
     switch ($action) {
         case 'insert':

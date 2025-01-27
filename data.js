@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     loadTableData();
 
-    // Listeners para os botões de ordenação
     ['cpf', 'logradouro', 'bairro', 'data', 'nome', 'cidade'].forEach(column => {
         document.getElementById(`sortBy${capitalize(column)}`).addEventListener('click', () => {
             console.log(`Ordenar por ${capitalize(column)}`);
@@ -9,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Listener para o envio do formulário
     document.getElementById('formModal').addEventListener('submit', function (e) {
         e.preventDefault();
 
@@ -23,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
         saveData(formData, action);
     });
 
-    // Funções auxiliares
     function getFormData() {
         return {
             nome: document.getElementById('nome').value.trim(),
@@ -63,13 +60,13 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('manageData.php', {
             method: 'POST',
             body: new URLSearchParams({
-                action: 'load'  // Enviando a ação 'load' para carregar os dados
+                action: 'load'
             })
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                populateTable(data.data);  // Usando 'data' como o array de registros
+                populateTable(data.data);
             } else {
                 alert('Erro ao carregar os dados!');
             }
@@ -138,37 +135,32 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('manageData.php', {
             method: 'POST',
             body: new URLSearchParams({
-                action: 'edit',  // Ação para buscar os dados do registro
+                action: 'edit',
                 id: id
             })
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Preenche o formulário com os dados do registro
                 Object.keys(data.record).forEach(key => {
                     const element = document.getElementById(key);
                     if (element) {
                         if (element.type === 'radio') {
-                            // Para campos de radio, marque o valor correspondente
                             element.checked = (element.value === data.record[key]);
                         } else {
-                            element.value = data.record[key];  // Preenche os campos do formulário
+                            element.value = data.record[key];
                         }
                     }
                 });
 
-                // Preenche o campo de sexo (radio buttons)
                 const sexoValue = data.record.sexo; 
                 if (sexoValue) {
                     const sexoRadio = document.querySelector(`input[name="sexo"][value="${sexoValue}"]`);
                     if (sexoRadio) sexoRadio.checked = true;
                 }
 
-                // Armazena o ID do registro para usar na atualização
                 localStorage.setItem('editIndex', id);
 
-                // Exibe o modal de edição (se estiver usando o Bootstrap)
                 const modal = new bootstrap.Modal(document.getElementById('formModal'));
                 modal.show();
             } else {
