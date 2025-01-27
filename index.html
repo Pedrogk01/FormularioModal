@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark" class="h-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro com Modal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css" rel="stylesheet">
+</head>
+<body class="h-100">
+  <div class="container mt-5 justify-content-center align-items-center h-40">  
+    <h3>Dados Cadastrados</h3>
+    <div class="d-flex justify-content-end align-items-center h-40">
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formModal">
+          <i class="bi bi-person-plus"></i> Novo Cadastro
+      </button>
+    </div>
+    <div class="d-flex justify-content-start">
+      <div class="dropdown">   
+        <button class="btn btn-primary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">  
+          Ordenar  
+        </button>  
+        <ul class="dropdown-menu" aria-labelledby="sortDropdown">  
+          <li><button id="sortByNome" class="dropdown-item">Ordenar por Nome</button></li>  
+          <li><button id="sortByData" class="dropdown-item">Ordenar por Data de Nascimento</button></li>  
+          <li><button id="sortByCpf" class="dropdown-item">Ordenar por CPF</button></li>  
+          <li><button id="sortByLogradouro" class="dropdown-item">Ordenar por Logradouro</button></li>
+          <li><button id="sortByCidade" class="dropdown-item">Ordenar por Cidade</button></li>  
+          <li><button id="sortByBairro" class="dropdown-item">Ordenar por Bairro</button></li>  
+        </ul>  
+      </div>
+      <button id="exportToPdf" class="btn btn-success ms-3">
+        <i class="bi bi-file-earmark-pdf"></i> Gerar PDF
+      </button>
+      </div>
+      <div class="table-responsive">
+        <table id="dadosTable" class="display table table-striped">
+          <thead>
+              <tr>
+                  <th>Id</th>
+                  <th>Nome</th>
+                  <th>Sobrenome</th>
+                  <th>Data</th>
+                  <th>Sexo</th>
+                  <th>CPF</th>
+                  <th>Tipo</th>
+                  <th>Logradouro</th>
+                  <th>Cidade</th>
+                  <th>Bairro</th>
+                  <th>Número</th>
+                  <th>CEP</th>
+                  <th>Email</th>
+                  <th>Telefone</th>
+                  <th>Ações</th>
+              </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+  <form action="manageData.php" method="post" class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="formModalLabel">Formulário de Cadastro</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <ul class="nav nav-tabs" id="tabContent">
+            <li class="nav-item">
+              <a class="nav-link active" id="tab-informacoesGerais" data-bs-toggle="tab" href="#informacoesGerais">Informações Gerais</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="tab-endereco" data-bs-toggle="tab" href="#endereco">Endereço</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="tab" href="#contatos">Contatos</a>
+            </li>
+          </ul>
+
+          <div class="tab-content mt-3">
+            <div class="tab-pane fade show active" id="informacoesGerais">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="nome" class="form-label">Nome</label>
+                  <input type="text" class="form-control" id="nome" name="nome" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="sobrenome" class="form-label">Sobrenome</label>
+                  <input type="text" class="form-control" id="sobrenome" name="sobrenome" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="data" class="form-label">Data de Nascimento</label>
+                  <input type="date" class="form-control" id="data" name="data" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Sexo</label><br>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="masculino" name="sexo" value="Masculino" required>
+                    <label class="form-check-label" for="masculino">Masculino</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="feminino" name="sexo" value="Feminino" required>
+                    <label class="form-check-label" for="feminino">Feminino</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="outro" name="sexo" value="outro" required>
+                    <label class="form-check-label" for="outro">Outro</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="cpf" class="form-label">CPF</label>
+                  <input type="text" class="form-control" id="cpf" name="cpf" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="endereco">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="tipo" class="form-label">Tipo de Logradouro</label>
+                  <select id="tipo" name="tipo" class="form-control select2">
+                    <option value="Rua">Rua</option>
+                    <option value="Avenida">Avenida</option>
+                    <option value="Travessa">Travessa</option>
+                    <option value="Praça">Praça</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="logradouro" class="form-label">Logradouro</label>
+                  <input type="text" class="form-control" id="logradouro" name="logradouro" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="cidade" class="form-label">Cidade</label>
+                  <select id="cidade" name="cidade" class="form-control select2">
+                    <option value="caraguatatuba">Caraguatatuba</option>
+                    <option value="ilhabela">Ilhabela</option>
+                    <option value="saosebastiao">São Sebastião</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="bairro" class="form-label">Bairro</label>
+                  <select id="bairro" name="bairro" class="form-control select2">
+                    <option value="">Selecione um bairro</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="numero" class="form-label">Número</label>
+                  <input type="number" class="form-control" id="numero" name="numero" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="cep" class="form-label">CEP</label>
+                  <input type="text" class="form-control" id="cep" name="cep" required>
+                </div>
+              </div> 
+            </div>
+
+            <div class="tab-pane fade" id="contatos">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="telefone" class="form-label">Telefone/Celular</label>
+                  <input type="text" class="form-control" id="telefone" name="telefone" required>                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          <button type="submit" class="btn btn-primary" id="submit">Enviar</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+   
+  </div> 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery-mask-plugin@1.14.16/dist/jquery.mask.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <script src="script.js"></script>
+  <script src="data.js"></script>
+  <script src="export_pdf.js"></script>
+</body>
+</html>
