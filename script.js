@@ -5,37 +5,7 @@ $(document).ready(function () {
     $('#telefone').mask('(00) 00000-0000');
   
     $('.select2').select2();
-  
-    $('#submitAllForms').click(function () {
-      var dados = {
-        nome: $('#nome').val(),
-        sobrenome: $('#sobrenome').val(),
-        data: $('#data').val(),
-        sexo: $('input[name="sexo"]:checked').val(),
-        cpf: $('#cpf').val(),
-        tipo: $('#tipo').val(),
-        logradouro: $('#logradouro').val(),
-        cidade: $('#cidade').val(),
-        bairro: $('#bairro').val(),
-        numero: $('#numero').val(),
-        cep: $('#cep').val(),
-        email: $('#email').val(),
-        telefone: $('#telefone').val(),
-      };
-  
-      $.ajax({
-        url: 'process.php',
-        type: 'POST',
-        data: dados,
-        success: function(response) {
-          alert('Cadastro realizado com sucesso!');
-          $('#formModal').modal('hide');
-        },
-        error: function() {
-          alert('Erro ao enviar o formulário');
-        }
-      });
-    });
+    
   });
   document.addEventListener("DOMContentLoaded", function() {
     const bairrosPorCidade = {
