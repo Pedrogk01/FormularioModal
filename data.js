@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    const modalElement = document.getElementById('formModal');
+    const modal = new bootstrap.Modal(modalElement);
+
     document.getElementById('formModal').addEventListener('submit', function (e) {
         e.preventDefault();
 
@@ -19,6 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const action = localStorage.getItem('editIndex') !== null ? 'update' : 'insert';
         saveData(formData, action);
+
+        clearForm();
+        modal.hide();
     });
 
     function getFormData() {
@@ -164,7 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 localStorage.setItem('editIndex', id);
 
-                const modal = new bootstrap.Modal(document.getElementById('formModal'));
                 modal.show();
             } else {
                 alert('Erro ao carregar os dados do registro para edição: ' + data.message);
@@ -212,6 +217,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })
         .catch(err => console.error('Erro:', err));
+    }
+
+    function clearForm() {
+        const form = document.getElementById('formModal');
+        form.reset();
+        const radios = form.querySelectorAll('input[type="radio"]');
+        radios.forEach(radio => radio.checked = false);
     }
 
     function capitalize(str) {
