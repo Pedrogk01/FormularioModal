@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     loadTableData();
 
-    ['cpf', 'logradouro', 'bairro', 'data', 'nome', 'cidade'].forEach(column => {
+    ['id','cpf', 'logradouro', 'bairro', 'data', 'nome', 'cidade'].forEach(column => {
         document.getElementById(`sortBy${capitalize(column)}`).addEventListener('click', () => {
             console.log(`Ordenar por ${capitalize(column)}`);
             sortTable(column);
@@ -56,11 +56,14 @@ document.addEventListener('DOMContentLoaded', () => {
         return emailPattern.test(email);
     }
 
-    function loadTableData() {
+    function loadTableData(city = '', genero = '', tipo = '') {
         fetch('manageData.php', {
             method: 'POST',
             body: new URLSearchParams({
-                action: 'load'
+                action: 'load',
+                city: city,
+                genero: genero,
+                tipo: tipo
             })
         })
         .then(response => response.json())
@@ -214,4 +217,32 @@ document.addEventListener('DOMContentLoaded', () => {
     function capitalize(str) {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
+
+    $(document).ready(function() {
+        var table = $('#dadosTable').DataTable({
+            dom: 'rt',
+            ordering: false
+        });
+
+        $('#city').on('change', function() {
+            var city = $(this).val();
+            var genero = $('#genero').val();
+            var tipo = $('#tipo').val();
+            loadTableData(city, genero, tipo);
+        });
+
+        $('#genero').on('change', function() {
+            var genero = $(this).val();
+            var city = $('#city').val();
+            var tipo = $('#tipo').val();
+            loadTableData(city, genero, tipo);
+        });
+
+        $('#tipo').on('change', function() {
+            var tipo = $(this).val();
+            var city = $('#city').val();
+            var genero = $('#genero').val();
+            loadTableData(city, genero, tipo);
+        });
+    });
 });

@@ -65,13 +65,51 @@ function deleteData($id) {
     $stmt->close();
 }
 
-function loadTableData() {
+function loadTableData($city = '', $genero = '', $tipo = '') {
     global $conn;
-    $result = $conn->query("SELECT * FROM cadastro");
+
+    $sql = "SELECT * FROM cadastro WHERE 1=1";
+
+    if (!empty($city)) {
+        $sql .= " AND cidade = ?";
+    }
+    if (!empty($genero)) {
+        $sql .= " AND sexo = ?";
+    }
+    if (!empty($tipo)) {
+        $sql .= " AND tipo = ?";
+    }
+
+    $stmt = $conn->prepare($sql);
+
+    $paramTypes = "";
+    $params = [];
+
+    if (!empty($city)) {
+        $paramTypes .= "s";
+        $params[] = $city;
+    }
+    if (!empty($genero)) {
+        $paramTypes .= "s";
+        $params[] = $genero;
+    }
+    if (!empty($tipo)) {
+        $paramTypes .= "s";
+        $params[] = $tipo;
+    }
+
+    if ($paramTypes) {
+        $stmt->bind_param($paramTypes, ...$params);
+    }
+
+    $stmt->execute();
+    $result = $stmt->get_result();
     $data = [];
     while ($row = $result->fetch_assoc()) {
         $data[] = $row;
     }
+    $stmt->close();
+
     return $data;
 }
 
@@ -119,7 +157,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             break;
 
         case 'load':
-            $tableData = loadTableData();
+            $city = $_POST['city'] ?? '';
+            $genero = $_POST['genero'] ?? '';
+            $tipo = $_POST['tipo'] ?? '';
+            $tableData = loadTableData($city, $genero, $tipo);
             echo json_encode(["success" => true, "data" => $tableData]);
             break;
 

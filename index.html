@@ -21,7 +21,8 @@
         <button class="btn btn-primary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">  
           Ordenar  
         </button>  
-        <ul class="dropdown-menu" aria-labelledby="sortDropdown">  
+        <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+          <li><button id="sortById" class="dropdown-item">Ordenação padrão</button></li>  
           <li><button id="sortByNome" class="dropdown-item">Ordenar por Nome</button></li>  
           <li><button id="sortByData" class="dropdown-item">Ordenar por Data de Nascimento</button></li>  
           <li><button id="sortByCpf" class="dropdown-item">Ordenar por CPF</button></li>  
@@ -34,6 +35,25 @@
         <i class="bi bi-file-earmark-pdf"></i> Gerar PDF
       </button>
       </div>
+      <select onchange="" name="city" id="city" class="form-control select2 mt-3 w-25">
+        <option value="">selecione uma cidade</option>
+        <option value="caraguatatuba">Caraguatatuba</option>
+        <option value="ilhabela">Ilhabela</option>
+        <option value="saosebastiao">São Sebastião</option>
+      </select>
+      <select onchange="" name="genero" id="genero" class="form-control select2 mt-3 w-25">
+        <option value="">Selecione um gênero</option>
+        <option value="masculino">Masculino</option>
+        <option value="feminino">Feminino</option>
+        <option value="outro">Outro</option>
+      </select>
+      <select onchange="" name="tipo" id="tipo" class="form-control select2 mt-3 w-25">
+        <option value="">Selecione um tipo de logradouro</option>
+        <option value="Rua">Rua</option>
+        <option value="Avenida">Avenida</option>
+        <option value="Travessa">Travessa</option>
+        <option value="Praça">Praça</option>
+      </select>
       <div class="table-responsive">
         <table id="dadosTable" class="display table table-striped">
           <thead>
